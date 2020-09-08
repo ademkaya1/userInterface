@@ -88,7 +88,7 @@ class saver_UserWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-
+    # last
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate

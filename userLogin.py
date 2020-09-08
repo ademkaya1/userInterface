@@ -20,6 +20,7 @@ class Ui_MainWindow(object):
         self.cursor.execute("Create Table If not exists users(user_name TEXT,password TEXT)")
         baglanti.commit()
 
+
     def setupUi(self, MainWindow):
 
         MainWindow.setObjectName("MainWindow")

@@ -21,6 +21,7 @@ class Ui_hasta_kayit_window(object):
             "Create Table If not exists patients_inf(hasta_adi TEXT,hasta_soyadi TEXT,dogum_tarihi INT,uyruk TEXT,TCKN INT,passaport INT,cinsiyet TEXT,anne_adi TEXT,baba_adi TEXT,e_posta TEXT,telefon INT,ev_adresi TEXT,TCKN_NEDEN_YOK TEXT)")
         baglanti.commit()
 
+
         # patient_name, patient_surname, patient_birtday,
         # patient_nationality, patient_TCKN,
         # patient_passaport, patient_cinsiyet,
