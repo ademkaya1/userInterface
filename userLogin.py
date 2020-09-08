@@ -1,4 +1,3 @@
-
 import os
 import sqlite3
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -8,13 +7,12 @@ from PyQt5.QtGui import QIcon
 
 from patientRegister import *
 from userRegister import *
-
-from PyQt5.QtGui import QIcon, QPixmap,QPalette,QImage,QBrush
-
+import warnings
+warnings.simplefilter("ignore")
+from PyQt5.QtGui import QIcon, QPixmap, QPalette, QImage, QBrush
 
 
 class Ui_MainWindow(object):
-
 
     def baglanti_olustur(self):
         baglanti = sqlite3.connect("sqlite/patient_info.sqlite")
@@ -24,7 +22,6 @@ class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
 
-
         MainWindow.setObjectName("MainWindow")
         MainWindow.setFixedSize(600, 450)
         MainWindow.setStyleSheet("""QLineEdit {
@@ -32,6 +29,7 @@ class Ui_MainWindow(object):
                     border-width: 2px;
                     border-radius: 10px;
                     border-color: black;
+                    
                     font: bold 15px;
                     min-width: 10em;
                     padding: 6px;
@@ -66,8 +64,7 @@ class Ui_MainWindow(object):
         pic = QtWidgets.QLabel(self.centralwidget)
         pic.setGeometry(105, 80, 50, 100)
         # use full ABSOLUTE path to the image, not relative
-        pic.setPixmap(QtGui.QPixmap(os.getcwd() + "icons/qwert.png"))
-
+        pic.setPixmap(QtGui.QPixmap(os.getcwd() + "/icons/qwert.png"))
 
         self.user_name_edit = QtWidgets.QLineEdit(self.centralwidget)
         self.user_name_edit.setGeometry(QtCore.QRect(140, 113, 360, 40))
@@ -85,9 +82,10 @@ class Ui_MainWindow(object):
         self.password_edit.setObjectName("password_edit")
         self.password_edit.setEchoMode(QtWidgets.QLineEdit.Password)
 
+
         pic2 = QtWidgets.QLabel(self.centralwidget)
         pic2.setGeometry(105, 132, 30, 100)
-        pic2.setPixmap(QtGui.QPixmap(os.getcwd() + "../password2.png"))
+        pic2.setPixmap(QtGui.QPixmap(os.getcwd() + "/icons/password2.png"))
 
         self.robot_checkbox = QtWidgets.QCheckBox(self.centralwidget)
         self.robot_checkbox.setGeometry(QtCore.QRect(325, 200, 250, 25))
@@ -104,7 +102,7 @@ class Ui_MainWindow(object):
         self.login_buton.setFont(font)
         self.login_buton.setObjectName("login_buton")
         self.login_buton.clicked.connect(self.log_in)
-        self.login_buton.setIcon(QtGui.QIcon("enter.png"))
+        self.login_buton.setIcon(QtGui.QIcon("icons/enter.png"))
 
         self.webcam_login = QtWidgets.QPushButton(self.centralwidget)
         self.webcam_login.setGeometry(QtCore.QRect(270, 230, 235, 50))
@@ -113,7 +111,7 @@ class Ui_MainWindow(object):
         self.webcam_login.setFont(font)
         self.webcam_login.setObjectName("webcam_Login")
         self.webcam_login.clicked.connect(self.webcam_login_ol)
-        self.webcam_login.setIcon(QtGui.QIcon("video-call.png"))
+        self.webcam_login.setIcon(QtGui.QIcon("icons/video-call.png"))
 
         # self.yazi_alani = QtWidgets.QLabel(self.centralwidget)
         # self.yazi_alani.setGeometry(80, 370, 500, 60)
@@ -122,7 +120,6 @@ class Ui_MainWindow(object):
         # self.yazi_alani.setFont(QtGui.QFont('SansSerif', 13))
         # self.yazi_alani.setObjectName("yazi_alani")
 
-
         self.new_user = QtWidgets.QPushButton(self.centralwidget)
         self.new_user.setGeometry(QtCore.QRect(100, 285, 405, 50))
         font = QtGui.QFont()
@@ -130,7 +127,7 @@ class Ui_MainWindow(object):
         self.new_user.setFont(font)
         self.new_user.setObjectName("new_user")
         self.new_user.clicked.connect(self.new_user_add)
-        self.new_user.setIcon(QtGui.QIcon("plus.png"))
+        self.new_user.setIcon(QtGui.QIcon("icons/plus.png"))
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -151,14 +148,6 @@ class Ui_MainWindow(object):
         self.webcam_login.setText(_translate("MainWindow", "KAMERA İLE GİRİŞ YAP"))
         # self.yazi_alani.setText(_translate("MainWindow", ""))
 
-    # def robot_ui(self):
-    #     self.window = QtWidgets.QMainWindow()
-    #     self.ui = Ui_hasta_kayit_window()
-    #     self.ui.setupUi(self.window)
-    #     self.window.show()
-    # -------------------------------------------------/
-
-# -------------------------------------------/
     def after_entered(self):
         msg_box = QtWidgets.QMessageBox()
         msg_box.setIcon(QtWidgets.QMessageBox.Information)
@@ -174,18 +163,10 @@ class Ui_MainWindow(object):
 
             self.ui.setupUi(self.window)
             self.window.show()
-
-
         else:
             print("yeni sayfa yakında gelecek")
 
-
-
-
-
-
     def log_in(self):
-
 
         user_name_text = self.user_name_edit.text()
 
@@ -231,7 +212,6 @@ class Ui_MainWindow(object):
 
             # self.yazi_alani.setText("Hatalı işlem yaptınız Lütfen tekrar deneyiniz")
 
-
     def new_user_add(self):
         self.msg_box = QtWidgets.QMessageBox()
         self.msg_box.setIcon(QtWidgets.QMessageBox.Information)
@@ -256,6 +236,7 @@ class Ui_MainWindow(object):
         import photoResult
         photoResult
         MainWindow.hide()
+
 
 if __name__ == "__main__":
     import sys

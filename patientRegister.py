@@ -18,7 +18,7 @@ class Ui_hasta_kayit_window(object):
         baglanti = sqlite3.connect("sqlite/patient_info.sqlite")
         self.cursor = baglanti.cursor()
         self.cursor.execute(
-            "Create Table If not exists patients(hasta_adi TEXT,hasta_soyadi TEXT,dogum_tarihi INT,uyruk TEXT,TCKN INT,passaport INT,cinsiyet TEXT,anne_adi TEXT,baba_adi TEXT,e_posta TEXT,telefon INT,ev_adresi TEXT)")
+            "Create Table If not exists patients_inf(hasta_adi TEXT,hasta_soyadi TEXT,dogum_tarihi INT,uyruk TEXT,TCKN INT,passaport INT,cinsiyet TEXT,anne_adi TEXT,baba_adi TEXT,e_posta TEXT,telefon INT,ev_adresi TEXT,TCKN_NEDEN_YOK TEXT)")
         baglanti.commit()
 
         # patient_name, patient_surname, patient_birtday,
@@ -45,6 +45,7 @@ class Ui_hasta_kayit_window(object):
                                             font: bold 15px;
                                             min-width: 10em;
                                             padding: 6px;
+                                            
                                             }QPushButton {background-color: white; border-style: outset;border-width: 2px;border-radius: 10px;border-color: black;}
                                             QPushButton:hover:!pressed{border: 1px solid green;}
                                             QDateEdit:hover:!pressed{border: 1px solid green;}""")
@@ -69,11 +70,11 @@ class Ui_hasta_kayit_window(object):
         self.comboBox_uyruk.setCurrentText("")
         self.comboBox_uyruk.setMaxCount(2147483647)
         self.comboBox_uyruk.setObjectName("comboBox_uyruk")
-        self.comboBox_uyruk_list = ["Uyruk Seçiniz", "Türkiye", "Arjantin", "Angola", "Arabistan", "Brezilya",
+        self.comboBox_uyruk_list = ["", "Arjantin", "Angola", "Arabistan", "Brezilya",
                                     "Belçika", "Çin",
                                     "Danimarka", "Diğer"]
         self.comboBox_uyruk.addItems(self.comboBox_uyruk_list)
-        self.comboBox_uyruk.setCurrentIndex(1)
+        self.comboBox_uyruk.setCurrentIndex(0)
         self.comboBox_uyruk.setDisabled(True)
         # endregion UYRUK
 
@@ -109,7 +110,7 @@ class Ui_hasta_kayit_window(object):
 
         # region KİMLİK YOK
         self.checkBox_Kimlik_Yok = QtWidgets.QCheckBox(self.centralwidget)
-        self.checkBox_Kimlik_Yok.setGeometry(QtCore.QRect(560, 40, 141, 20))
+        self.checkBox_Kimlik_Yok.setGeometry(QtCore.QRect(560, 40, 180, 20))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.checkBox_Kimlik_Yok.setFont(font)
@@ -127,9 +128,9 @@ class Ui_hasta_kayit_window(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.comboBox_Kimlik_Yok_Neden.setFont(font)
-        self.comboBox_Kimlik_Yok_Neden.setInputMethodHints(QtCore.Qt.ImhPreferUppercase)
+        # self.comboBox_Kimlik_Yok_Neden.setInputMethodHints(QtCore.Qt.ImhPreferUppercase)
         self.comboBox_Kimlik_Yok_Neden.setObjectName("comboBox_Kimlik_Yok_Neden")
-        self.comboBox_Kimlik_Yok_Neden_list = ["Kimlik Neden Yok Seçiniz", "Kayıp", "Tüzel Kişi", "Devlet Görevlisi",
+        self.comboBox_Kimlik_Yok_Neden_list = ["", "Kayıp", "Tüzel Kişi", "Devlet Görevlisi",
                                                "Diğer"]
         self.comboBox_Kimlik_Yok_Neden.addItems(self.comboBox_Kimlik_Yok_Neden_list)
         self.comboBox_Kimlik_Yok_Neden.setDisabled(True)
@@ -147,8 +148,11 @@ class Ui_hasta_kayit_window(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.lineEdit_Adi.setFont(font)
-        self.lineEdit_Adi.setInputMethodHints(QtCore.Qt.ImhPreferUppercase | QtCore.Qt.ImhUppercaseOnly)
+        # self.lineEdit_Adi.setInputMethodHints(QtCore.Qt.ImhPreferUppercase | QtCore.Qt.ImhUppercaseOnly)
         self.lineEdit_Adi.setObjectName("lineEdit_Adi")
+        # self.rxt_2 = QtCore.QRegExp(r">AAAAA-AAAAA-AAAAA-AAAAA-AAAAA;#")
+        # self.lineEdit_Adi.setValidator(QtGui.QRegExpValidator(self.rxt_2))
+
         # endregion AD
 
         # region SOYAD
@@ -190,6 +194,7 @@ class Ui_hasta_kayit_window(object):
         self.lineEdit_Passaport_No.setFont(font)
         self.lineEdit_Passaport_No.setInputMethodHints(QtCore.Qt.ImhPreferUppercase)
         self.lineEdit_Passaport_No.setObjectName("lineEdit_Passaport_No")
+        self.lineEdit_Passaport_No.setMaxLength(9)
         self.lineEdit_Passaport_No.setDisabled(True)
         # endregion PASSAPORT
 
@@ -200,7 +205,7 @@ class Ui_hasta_kayit_window(object):
         font.setPointSize(10)
         self.comboBox_Cinsiyet.setFont(font)
         self.comboBox_Cinsiyet.setObjectName("comboBox_Cinsiyet")
-        self.comboBox_Cinsiyet_list = ["Cinsiyet Seçiniz", "Erkek", "Kadın"]
+        self.comboBox_Cinsiyet_list = ["", "Erkek", "Kadın"]
         self.comboBox_Cinsiyet.addItems(self.comboBox_Cinsiyet_list)
         # endregion CİNSİYET
 
@@ -271,8 +276,9 @@ class Ui_hasta_kayit_window(object):
         self.lineEdit_Eposta.setObjectName("lineEdit_Eposta")
 
         self.my_regex = QtCore.QRegExp(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
-        self.my_validator = QtGui.QRegExpValidator(self.my_regex, self.lineEdit_Tc_Kimlik_No)
+        self.my_validator = QtGui.QRegExpValidator(self.my_regex, self.lineEdit_Eposta)
         self.lineEdit_Eposta.setValidator(self.my_validator)
+
         # endregion E_POSTA
 
         # region CEP TELEFONU
@@ -287,9 +293,10 @@ class Ui_hasta_kayit_window(object):
         # self.lineEdit_Cep_Telefonu.setInputMethodHints(QtCore.Qt.ImhFormattedNumbersOnly | QtCore.Qt.ImhPreferNumbers)
         self.lineEdit_Cep_Telefonu.setObjectName("lineEdit_Cep_Telefonu")
 
-        self.lineEdit_Cep_Telefonu.setMaxLength(11)
+        self.lineEdit_Cep_Telefonu.setMaxLength(10)
         self.rx = QtCore.QRegExp("\d+")
         self.lineEdit_Cep_Telefonu.setValidator(QtGui.QRegExpValidator(self.rx))
+
         # endregion CEP TELEFONU
 
         # region EV ADRESİ
@@ -302,8 +309,11 @@ class Ui_hasta_kayit_window(object):
 
         self.textEdit_Ev_Adresi = QtWidgets.QTextEdit(self.centralwidget)
         self.textEdit_Ev_Adresi.setGeometry(QtCore.QRect(160, 320, 621, 141))
-        self.textEdit_Ev_Adresi.setInputMethodHints(QtCore.Qt.ImhUppercaseOnly)
+        # self.textEdit_Ev_Adresi.setInputMethodHints(QtCore.Qt.ImhUppercaseOnly)
         # self.textEdit_Ev_Adresi.setMaxLength(70000)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.textEdit_Ev_Adresi.setFont(font)
         self.textEdit_Ev_Adresi.setObjectName("TextEdit_Ev_Adresi")
         # endregion EV ADRESİ
 
@@ -377,7 +387,7 @@ class Ui_hasta_kayit_window(object):
             self.comboBox_uyruk.setEnabled(False)
             self.lineEdit_Passaport_No.setEnabled(False)
             self.lineEdit_Passaport_No.clear()
-            self.comboBox_uyruk.setCurrentIndex(1)
+            self.comboBox_uyruk.setCurrentIndex(0)
             self.lineEdit_Tc_Kimlik_No.setEnabled(True)
             self.checkBox_Kimlik_Yok.setDisabled(False)
 
@@ -387,7 +397,7 @@ class Ui_hasta_kayit_window(object):
             self.lineEdit_Tc_Kimlik_No.setText("11111111111")
             self.lineEdit_Tc_Kimlik_No.setEnabled(False)
             self.checkBox_Yabanci_Hasta.setDisabled(True)
-            self.comboBox_uyruk.setCurrentIndex(1)
+            self.comboBox_uyruk.setCurrentIndex(0)
         else:
             self.comboBox_Kimlik_Yok_Neden.setEnabled(False)
             self.comboBox_Kimlik_Yok_Neden.setCurrentIndex(0)
@@ -421,7 +431,7 @@ class Ui_hasta_kayit_window(object):
     def alanlari_temizle(self):
         self.lineEdit_Adi.clear()
         self.lineEdit_Soyadi.clear()
-        self.comboBox_uyruk.setCurrentIndex(1)
+        self.comboBox_uyruk.setCurrentIndex(0)
         self.lineEdit_Tc_Kimlik_No.clear()
         self.lineEdit_Passaport_No.clear()
         self.comboBox_Cinsiyet.setCurrentIndex(0)
@@ -446,6 +456,7 @@ class Ui_hasta_kayit_window(object):
         patient_nationality = self.comboBox_uyruk.currentText()
         patient_TCKN = self.lineEdit_Tc_Kimlik_No.text()
         patient_passaport = self.lineEdit_Passaport_No.text()
+        patient_TC_yok = self.comboBox_Kimlik_Yok_Neden.currentText()
         patient_cinsiyet = self.comboBox_Cinsiyet.currentText()
         patient_mother_name = self.lineEdit_Anne_Adi.text()
         patient_father_name = self.lineEdit_Baba_Adi.text()
@@ -458,33 +469,45 @@ class Ui_hasta_kayit_window(object):
         now = datetime.datetime.now()
         b = now.strftime("%Y")
 
-        #region Yabanci hasta ise
+        # region Yabanci hasta ise
         if self.checkBox_Yabanci_Hasta.isChecked():
             if len(patient_name) != 0:
                 if len(patient_surname) != 0:
                     if int(a) < int(b):
                         if int(a) > 1900:
-                            if patient_nationality != "Uyruk Seçiniz":
+                            if patient_nationality != "" and patient_nationality != "Türkiye":
                                 if len(patient_passaport) == 9:
-                                    if patient_cinsiyet != "Cinsiyet Seçiniz":
+                                    if patient_cinsiyet != "":
                                         if patient_mother_name != 0:
                                             if patient_father_name != 0:
                                                 if patient_e_posta != 0 and re.search("@", patient_e_posta):
-                                                    if len(patient_phone) == 11:
-                                                        if len(patient_adress) != 20:
-                                                            connection = sqlite3.connect("sqlite/patient_info.sqlite")
-                                                            connection.execute(
-                                                                "INSERT INTO patients VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
-                                                                (
-                                                                    patient_name, patient_surname, patient_birtday,
-                                                                    patient_nationality, patient_TCKN,
-                                                                    patient_passaport, patient_cinsiyet,
-                                                                    patient_mother_name, patient_father_name,
-                                                                    patient_e_posta, patient_phone, patient_adress,))
-                                                            connection.commit()
-                                                            connection.close()
+                                                    if len(patient_phone) >= 9 and len(patient_phone) <= 12:
+                                                        if len(patient_adress) > 20:
 
-                                                            self.register_done()
+                                                            if re.search("com", patient_e_posta):
+                                                                connection = sqlite3.connect(
+                                                                    "sqlite/patient_info.sqlite")
+                                                                connection.execute(
+                                                                    "INSERT INTO patients_inf VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                                                                    (
+                                                                        patient_name.upper(),
+                                                                        patient_surname.upper(),
+                                                                        patient_birtday,
+                                                                        patient_nationality, patient_TCKN,
+                                                                        patient_passaport.upper(),
+                                                                        patient_cinsiyet.upper(),
+                                                                        patient_mother_name.upper(),
+                                                                        patient_father_name.upper(),
+                                                                        patient_e_posta, patient_phone,
+                                                                        patient_adress.upper(), patient_TC_yok.upper()))
+                                                                connection.commit()
+                                                                connection.close()
+
+                                                                self.register_done()
+                                                            else:
+                                                                self.uyari_msg_text = "Hatalı Yada Eksik E-POSTA"
+                                                                self.uyari_msg()
+
                                                         else:
                                                             self.uyari_msg_text = "Hatalı Yada Eksik ADRES"
                                                             self.uyari_msg()
@@ -507,7 +530,7 @@ class Ui_hasta_kayit_window(object):
                                     self.uyari_msg_text = "Hatalı Yada Eksik PASAPORT"
                                     self.uyari_msg()
                             else:
-                                self.uyari_msg_text = "Hatalı Yada Eksik UYRUK"
+                                self.uyari_msg_text = "Hatalı Yada Yanlış UYRUK SEÇTİNİZ"
                                 self.uyari_msg()
                         else:
                             self.uyari_msg_text = "Hatalı Yada Eksik DOĞUM TARİHİ"
@@ -523,10 +546,9 @@ class Ui_hasta_kayit_window(object):
                 self.uyari_msg()
         #         endregion
 
-
-
         # region TC-vatandaşı fakat kimlik yok
         if self.checkBox_Kimlik_Yok.isChecked():
+
             if len(patient_name) != 0:
                 if len(patient_surname) != 0:
                     if int(a) < int(b):
@@ -535,20 +557,33 @@ class Ui_hasta_kayit_window(object):
                                 if patient_mother_name != 0:
                                     if patient_father_name != 0:
                                         if patient_e_posta != 0 and re.search("@", patient_e_posta):
-                                            if len(patient_phone) == 11:
-                                                if len(patient_adress) != 20:
-                                                    connection = sqlite3.connect("sqlite/patient_info.sqlite")
-                                                    connection.execute(
-                                                        "INSERT INTO patients VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", (
-                                                            patient_name, patient_surname, patient_birtday,
-                                                            patient_nationality, patient_TCKN,
-                                                            patient_passaport, patient_cinsiyet,
-                                                            patient_mother_name, patient_father_name,
-                                                            patient_e_posta, patient_phone, patient_adress,))
-                                                    connection.commit()
-                                                    connection.close()
+                                            if len(patient_phone) == 10:
+                                                if len(patient_adress) > 20:
+                                                    if re.search("com", patient_e_posta):
+                                                        if patient_TC_yok != "":
+                                                            connection = sqlite3.connect("sqlite/patient_info.sqlite")
+                                                            connection.execute(
+                                                                "INSERT INTO patients_inf VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                                                                (
+                                                                    patient_name.upper(), patient_surname.upper(),
+                                                                    patient_birtday,
+                                                                    patient_nationality, patient_TCKN,
+                                                                    patient_passaport.upper(), patient_cinsiyet.upper(),
+                                                                    patient_mother_name.upper(),
+                                                                    patient_father_name.upper(),
+                                                                    patient_e_posta, patient_phone,
+                                                                    patient_adress.upper(), patient_TC_yok.upper()))
+                                                            connection.commit()
+                                                            connection.close()
 
-                                                    self.register_done()
+                                                            self.register_done()
+                                                        else:
+                                                            self.uyari_msg_text = "Hatalı Yada Eksik KİMLİK NEDENİ"
+                                                            self.uyari_msg()
+
+                                                    else:
+                                                        self.uyari_msg_text = "Hatalı Yada Eksik E-POSTA"
+                                                        self.uyari_msg()
                                                 else:
                                                     self.uyari_msg_text = "Hatalı Yada Eksik ADRES"
                                                     self.uyari_msg()
@@ -581,10 +616,9 @@ class Ui_hasta_kayit_window(object):
                 self.uyari_msg()
         #         endregion
 
-
-
-        #region Tc vatandaşı ise
+        # region Tc vatandaşı ise
         if not self.checkBox_Kimlik_Yok.isChecked() and not self.checkBox_Yabanci_Hasta.isChecked():
+
             if len(patient_name) != 0:
                 if len(patient_surname) != 0:
                     if int(a) < int(b):
@@ -593,29 +627,37 @@ class Ui_hasta_kayit_window(object):
                                 if patient_mother_name != 0:
                                     if patient_father_name != 0:
                                         if patient_e_posta != 0 and re.search("@", patient_e_posta):
-                                            if len(patient_phone) == 11:
-                                                if len(patient_adress) != 20:
-                                                    if len(patient_TCKN) == 11:
-                                                        connection = sqlite3.connect("sqlite/patient_info.sqlite")
-                                                        connection.execute(
-                                                            "INSERT INTO patients VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", (
-                                                                patient_name, patient_surname, patient_birtday,
-                                                                patient_nationality, patient_TCKN,
-                                                                patient_passaport, patient_cinsiyet,
-                                                                patient_mother_name, patient_father_name,
-                                                                patient_e_posta, patient_phone, patient_adress,))
-                                                        connection.commit()
-                                                        connection.close()
+                                            if re.search("com", patient_e_posta):
+                                                if len(patient_phone) == 10:
+                                                    if len(patient_adress) > 20:
+                                                        if len(patient_TCKN) == 11:
+                                                            connection = sqlite3.connect("sqlite/patient_info.sqlite")
+                                                            connection.execute(
+                                                                "INSERT INTO patients_inf VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                                                                (
+                                                                    patient_name.upper(), patient_surname.upper(),
+                                                                    patient_birtday,
+                                                                    patient_nationality, patient_TCKN,
+                                                                    patient_passaport.upper(), patient_cinsiyet.upper(),
+                                                                    patient_mother_name.upper(),
+                                                                    patient_father_name.upper(),
+                                                                    patient_e_posta, patient_phone,
+                                                                    patient_adress.upper(), patient_TC_yok.upper()))
+                                                            connection.commit()
+                                                            connection.close()
 
-                                                        self.register_done()
+                                                            self.register_done()
+                                                        else:
+                                                            self.uyari_msg_text = "Hatalı Yada Eksik TC NO"
+                                                            self.uyari_msg()
                                                     else:
-                                                        self.uyari_msg_text = "Hatalı Yada Eksik TC NO"
+                                                        self.uyari_msg_text = "Hatalı Yada Eksik ADRES"
                                                         self.uyari_msg()
                                                 else:
-                                                    self.uyari_msg_text = "Hatalı Yada Eksik ADRES"
+                                                    self.uyari_msg_text = "Hatalı Yada Eksik TELEFON NUMARASI"
                                                     self.uyari_msg()
                                             else:
-                                                self.uyari_msg_text = "Hatalı Yada Eksik TELEFON NUMARASI"
+                                                self.uyari_msg_text = "Hatalı Yada Eksik E-POSTA"
                                                 self.uyari_msg()
                                         else:
                                             self.uyari_msg_text = "Hatalı Yada Eksik E-POSTA"
@@ -641,9 +683,8 @@ class Ui_hasta_kayit_window(object):
             else:
                 self.uyari_msg_text = "Hatalı yada eksik İSİM"
                 self.uyari_msg()
+
         # endregion
-        
-                                        
 
 
 if __name__ == "__main__":

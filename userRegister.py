@@ -12,6 +12,8 @@ class saver_UserWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(600, 400)
+        MainWindow.setMinimumSize(QtCore.QSize(600, 400))
+        MainWindow.setMaximumSize(QtCore.QSize(600, 400))
         MainWindow.setWindowIcon(QtGui.QIcon("icons/add-f.png"))
         MainWindow.setStyleSheet("""QLineEdit {
                             border-style: outset;
@@ -31,7 +33,7 @@ class saver_UserWindow(object):
         self.centralwidget.setObjectName("centralwidget")
 
         self.user_save_label = QtWidgets.QLabel(self.centralwidget)
-        self.user_save_label.setGeometry(QtCore.QRect(170, 10, 300, 61))
+        self.user_save_label.setGeometry(QtCore.QRect(195, 10, 300, 61))
         font = QtGui.QFont()
         font.setPointSize(16)
         self.user_save_label.setFont(font)
@@ -39,11 +41,11 @@ class saver_UserWindow(object):
 
         pic1 = QtWidgets.QLabel(self.centralwidget)
         pic1.setGeometry(130, 70, 50, 100)
-        pic1.setPixmap(QtGui.QPixmap(os.getcwd() + "icons/qwert.png"))
+        pic1.setPixmap(QtGui.QPixmap(os.getcwd() + "/icons/qwert.png"))
 
         pic3 = QtWidgets.QLabel(self.centralwidget)
         pic3.setGeometry(130, 115, 50, 100)
-        pic3.setPixmap(QtGui.QPixmap(os.getcwd() + "icons/password2.png"))
+        pic3.setPixmap(QtGui.QPixmap(os.getcwd() + "/icons/password2.png"))
 
 
         self.new_user_lineEdit = QtWidgets.QLineEdit(self.centralwidget)
@@ -67,13 +69,17 @@ class saver_UserWindow(object):
         self.save_buton.setGeometry(QtCore.QRect(165, 250, 100, 40))
         self.save_buton.setObjectName("save_buton")
         self.save_buton.clicked.connect(self.save_me)
-        self.save_buton.setIcon(QtGui.QIcon("file.png"))
+        self.save_buton.setIcon(QtGui.QIcon("icons/file.png"))
 
         self.mainmenu_buton = QtWidgets.QPushButton(self.centralwidget)
         self.mainmenu_buton.setGeometry(QtCore.QRect(268, 250, 200, 40))
         self.mainmenu_buton.setObjectName("mainmenu_buton")
         self.mainmenu_buton.clicked.connect(MainWindow.close)
-        self.mainmenu_buton.setIcon(QtGui.QIcon("main_page.png"))
+        self.mainmenu_buton.setIcon(QtGui.QIcon("icons/main_page.png"))
+
+        self.msg_box = QtWidgets.QMessageBox()
+        self.msg_box.setIcon(QtWidgets.QMessageBox.Information)
+        self.msg_box.setWindowTitle("Uyarı !")
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -83,18 +89,30 @@ class saver_UserWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Kaydol"))
-        self.user_save_label.setText(_translate("MainWindow", "YENİ KULLANICI KAYDI"))
+        self.user_save_label.setText(_translate("MainWindow", "YENİ KULLANICI KAYDET"))
 
         self.okey_checkBox.setText(_translate("MainWindow", "Onaylıyorum"))
         self.save_buton.setText(_translate("MainWindow", "Kaydet"))
         self.mainmenu_buton.setText(_translate("MainWindow","Anasayfaya Dön"))
 
+    def message_func(self):
+        self.msg_box.setStandardButtons(QtWidgets.QMessageBox.Ok)
+        self.returnValue = self.msg_box.exec()
+
+    # def sql(self):
+    #     self.cursor.execute("Select * From users Where user_name = ? and password = ?",
+    #                         (user_name_text, password_text))
+    #     data = self.cursor.fetchall()
+
     def save_me(self):
         add_user = self.new_user_lineEdit.text()
         add_password = self.new_password_lineEdit.text()
+
+
 
         if len(add_user) != 0:
             if len(add_password) != 0:
@@ -111,28 +129,15 @@ class saver_UserWindow(object):
                     connection.commit()
                     connection.close()
                 else:
-                    self.msg_box = QtWidgets.QMessageBox()
-                    self.msg_box.setIcon(QtWidgets.QMessageBox.Information)
                     self.msg_box.setText("Lütfen onaylayınız !")
-                    self.msg_box.setWindowTitle("Uyarı !")
-                    self.msg_box.setStandardButtons(QtWidgets.QMessageBox.Ok)
-                    self.returnValue = self.msg_box.exec()
-
+                    self.message_func()
             else:
-                self.msg_box = QtWidgets.QMessageBox()
-                self.msg_box.setIcon(QtWidgets.QMessageBox.Information)
                 self.msg_box.setText("Lütfen şifre giriniz ! ")
-                self.msg_box.setWindowTitle("Uyarı !")
-                self.msg_box.setStandardButtons(QtWidgets.QMessageBox.Ok)
-                self.returnValue = self.msg_box.exec()
-
+                self.message_func()
         else:
-            self.msg_box = QtWidgets.QMessageBox()
-            self.msg_box.setIcon(QtWidgets.QMessageBox.Information)
             self.msg_box.setText("Lütfen kullanıcı adı giriniz")
-            self.msg_box.setWindowTitle("Uyarı !")
-            self.msg_box.setStandardButtons(QtWidgets.QMessageBox.Ok)
-            self.returnValue = self.msg_box.exec()
+            self.message_func()
+
 
 
 
