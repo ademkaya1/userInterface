@@ -21,7 +21,6 @@ class Ui_hasta_kayit_window(object):
             "Create Table If not exists patients_inf(hasta_adi TEXT,hasta_soyadi TEXT,dogum_tarihi INT,uyruk TEXT,TCKN INT,passaport INT,cinsiyet TEXT,anne_adi TEXT,baba_adi TEXT,e_posta TEXT,telefon INT,ev_adresi TEXT,TCKN_NEDEN_YOK TEXT)")
         baglanti.commit()
 
-
         # patient_name, patient_surname, patient_birtday,
         # patient_nationality, patient_TCKN,
         # patient_passaport, patient_cinsiyet,
@@ -73,7 +72,7 @@ class Ui_hasta_kayit_window(object):
         self.comboBox_uyruk.setObjectName("comboBox_uyruk")
         self.comboBox_uyruk_list = ["", "Arjantin", "Angola", "Arabistan", "Brezilya",
                                     "Belçika", "Çin",
-                                    "Danimarka", "Diğer"]
+                                    "Danimarka","Türkiye", "Diğer"]
         self.comboBox_uyruk.addItems(self.comboBox_uyruk_list)
         self.comboBox_uyruk.setCurrentIndex(0)
         self.comboBox_uyruk.setDisabled(True)
@@ -151,6 +150,8 @@ class Ui_hasta_kayit_window(object):
         self.lineEdit_Adi.setFont(font)
         # self.lineEdit_Adi.setInputMethodHints(QtCore.Qt.ImhPreferUppercase | QtCore.Qt.ImhUppercaseOnly)
         self.lineEdit_Adi.setObjectName("lineEdit_Adi")
+        self.rxt2 = QtCore.QRegExp("[a-z-A-Z_]+")
+        self.lineEdit_Adi.setValidator(QtGui.QRegExpValidator(self.rxt2))
         # self.rxt_2 = QtCore.QRegExp(r">AAAAA-AAAAA-AAAAA-AAAAA-AAAAA;#")
         # self.lineEdit_Adi.setValidator(QtGui.QRegExpValidator(self.rxt_2))
 
@@ -170,6 +171,8 @@ class Ui_hasta_kayit_window(object):
         self.lineEdit_Soyadi.setFont(font)
         self.lineEdit_Soyadi.setInputMethodHints(QtCore.Qt.ImhUppercaseOnly)
         self.lineEdit_Soyadi.setObjectName("lineEdit_Soyadi")
+        self.rxt3 = QtCore.QRegExp("[a-z-A-Z_]+")
+        self.lineEdit_Soyadi.setValidator(QtGui.QRegExpValidator(self.rxt3))
         # endregion SOYAD
 
         # region CİNSİYET
@@ -243,6 +246,8 @@ class Ui_hasta_kayit_window(object):
         self.lineEdit_Anne_Adi.setFont(font)
         # self.lineEdit_Anne_Adi.setInputMethodHints(QtCore.Qt.ImhPreferUppercase | QtCore.Qt.ImhUppercaseOnly)
         self.lineEdit_Anne_Adi.setObjectName("lineEdit_Anne_Adi")
+        self.rxt2 = QtCore.QRegExp("[a-z-A-Z_]+")
+        self.lineEdit_Anne_Adi.setValidator(QtGui.QRegExpValidator(self.rxt2))
         # endregion ANNE ADI
 
         # region BABA ADI
@@ -259,6 +264,8 @@ class Ui_hasta_kayit_window(object):
         self.lineEdit_Baba_Adi.setFont(font)
         self.lineEdit_Baba_Adi.setInputMethodHints(QtCore.Qt.ImhUppercaseOnly)
         self.lineEdit_Baba_Adi.setObjectName("lineEdit_Baba_Adi")
+        self.rxt2 = QtCore.QRegExp("[a-z-A-Z_]+")
+        self.lineEdit_Baba_Adi.setValidator(QtGui.QRegExpValidator(self.rxt2))
         # endregion BABA ADI
 
         # region E_POSTA
@@ -550,6 +557,8 @@ class Ui_hasta_kayit_window(object):
         # region TC-vatandaşı fakat kimlik yok
         if self.checkBox_Kimlik_Yok.isChecked():
 
+
+
             if len(patient_name) != 0:
                 if len(patient_surname) != 0:
                     if int(a) < int(b):
@@ -615,6 +624,8 @@ class Ui_hasta_kayit_window(object):
             else:
                 self.uyari_msg_text = "Hatalı Yada Eksik AD"
                 self.uyari_msg()
+
+
         #         endregion
 
         # region Tc vatandaşı ise
