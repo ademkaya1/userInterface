@@ -74,7 +74,7 @@ class Ui_hasta_kayit_window(object):
                                     "Belçika", "Çin",
                                     "Danimarka","Türkiye", "Diğer"]
         self.comboBox_uyruk.addItems(self.comboBox_uyruk_list)
-        self.comboBox_uyruk.setCurrentIndex(0)
+        self.comboBox_uyruk.setCurrentIndex(8)
         self.comboBox_uyruk.setDisabled(True)
         # endregion UYRUK
 
@@ -395,7 +395,7 @@ class Ui_hasta_kayit_window(object):
             self.comboBox_uyruk.setEnabled(False)
             self.lineEdit_Passaport_No.setEnabled(False)
             self.lineEdit_Passaport_No.clear()
-            self.comboBox_uyruk.setCurrentIndex(0)
+            self.comboBox_uyruk.setCurrentIndex(8)
             self.lineEdit_Tc_Kimlik_No.setEnabled(True)
             self.checkBox_Kimlik_Yok.setDisabled(False)
 
@@ -405,7 +405,7 @@ class Ui_hasta_kayit_window(object):
             self.lineEdit_Tc_Kimlik_No.setText("11111111111")
             self.lineEdit_Tc_Kimlik_No.setEnabled(False)
             self.checkBox_Yabanci_Hasta.setDisabled(True)
-            self.comboBox_uyruk.setCurrentIndex(0)
+            self.comboBox_uyruk.setCurrentIndex(8)
         else:
             self.comboBox_Kimlik_Yok_Neden.setEnabled(False)
             self.comboBox_Kimlik_Yok_Neden.setCurrentIndex(0)
@@ -538,7 +538,7 @@ class Ui_hasta_kayit_window(object):
                                     self.uyari_msg_text = "Hatalı Yada Eksik PASAPORT"
                                     self.uyari_msg()
                             else:
-                                self.uyari_msg_text = "Hatalı Yada Yanlış UYRUK SEÇTİNİZ"
+                                self.uyari_msg_text = "Yabancı Hasta Uyruğu Türk Olamaz Ve Boş Geçilemez , Lütfen Uyruk Seçiniz !"
                                 self.uyari_msg()
                         else:
                             self.uyari_msg_text = "Hatalı Yada Eksik DOĞUM TARİHİ"
