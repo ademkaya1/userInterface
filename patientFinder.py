@@ -51,7 +51,9 @@ class Ui_MainWindow(object):
         self.tableWidget_Patient_List.setSelectionBehavior(QtWidgets.QTableWidget.SelectRows)
         self.tableWidget_Patient_List.setAlternatingRowColors(True)
         self.tableWidget_Patient_List.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
-        self.tableWidget_Patient_List.setHorizontalHeaderLabels(['HASTA ADI', 'SOYADI', 'DOĞUM TARİHİ', 'UYRUK','TCKN','PASSAPORT','CİNSİYET','ANNE ADI','BABA ADI','E-POSTA','TELEFON','EV ADRESİ'])
+        self.tableWidget_Patient_List.setHorizontalHeaderLabels(
+            ['HASTA ADI', 'SOYADI', 'DOĞUM TARİHİ', 'UYRUK', 'TCKN', 'PASSAPORT', 'CİNSİYET', 'ANNE ADI', 'BABA ADI',
+             'E-POSTA', 'TELEFON', 'EV ADRESİ'])
         # self.tableWidget_Patient_List.setDragEnabled(True)
         # self.tableWidget_Patient_List.setDragDropMode(QtWidgets.QAbstractItemView.DragDrop)
         # self.tableWidget_Patient_List.setDefaultDropAction(QtCore.Qt.LinkAction)
@@ -184,17 +186,29 @@ class Ui_MainWindow(object):
         self.pushButton_Create_New_Patient_Folder.setText(_translate("MainWindow", "SEÇİLİ HASTAYA YENİ DOSYA OLUŞTUR"))
         self.pushButton_clear.setText(_translate("MainWindow", "TEMİZLE"))
 
+    def database_connect(self):
+        baglanti = sqlite3.connect("sqlite/patient_info.sqlite")
+        self.cursor = baglanti.cursor()
+        self.cursor.execute("SELECT * FROM patients_inf")
+        baglanti.commit()
+
     def data_call(self):
-        # patient_name = self.lineEdit_name.text()
-        # patient_surname = self.lineEdit_Surname.text()
-        # patient_nationality = self.lineEdit_Nationality.text()
-        # patient_TCKN = self.lineEdit_TcNo.text()
-        # patient_passaport = self.lineEdit_Pasaport.text()
-        # patient_cinsiyet = self.ComboBox_Sex.currentText()
-        # patient_mother_name = self.lineEdit_Mother_Name.text()
-        # patient_father_name = self.lineEdit_Father_Name.text()
-        # if
-        pass
+        self.database_connect()
+        patient_name = self.lineEdit_name.text()
+        patient_surname = self.lineEdit_Surname.text()
+        patient_cinsiyet = self.ComboBox_Sex.currentText()
+        patient_nationality = self.lineEdit_Nationality.text()
+        patient_TCKN = self.lineEdit_TcNo.text()
+        patient_passaport = self.lineEdit_Pasaport.text()
+        patient_mother_name = self.lineEdit_Mother_Name.text()
+        patient_father_name = self.lineEdit_Father_Name.text()
+        self.cursor.execute(
+            "Select * From patients_inf Where hasta_adi = ? and hasta_soyadi = ? and cinsiyet = ? and uyruk = ? and TCKN = ? and passaport = ? and anne_adi = ? and baba_adi = ?",
+            (patient_name, patient_surname, patient_cinsiyet, patient_nationality, patient_TCKN, patient_passaport,
+             patient_mother_name, patient_father_name))
+        data = self.cursor.fetchall()
+        if len(data) != 0:
+            pass
 
     def clear_source_data(self):
         self.lineEdit_name.clear()
@@ -205,7 +219,6 @@ class Ui_MainWindow(object):
         self.ComboBox_Sex.setCurrentIndex(0)
         self.lineEdit_Father_Name.clear()
         self.lineEdit_Mother_Name.clear()
-
 
 
 if __name__ == "__main__":
