@@ -11,16 +11,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_MainWindow(object):
-    def connect_data(self):
-        connection = sqlite3.connect("sqlite/patient_info.sqlite")
-        query = "SELECT * FROM patients_inf"
-        result = connection.execute(query)
-        self.tableWidget_Patient_List.setRowCount(0)
-        for row_number, row_data in enumerate(result):
-            self.tableWidget_Patient_List.insertRow(row_number)
-            for column_number, data in enumerate(row_data):
-                self.tableWidget_Patient_List.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
-        connection.close()
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -94,15 +84,6 @@ class Ui_MainWindow(object):
         self.lineEdit_Surname = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit_Surname.setGeometry(QtCore.QRect(150, 100, 181, 31))
         self.lineEdit_Surname.setObjectName("lineEdit_Surname")
-        # self.dateEdit = QtWidgets.QDateEdit(self.centralwidget)
-        # self.dateEdit.setGeometry(QtCore.QRect(150, 150, 181, 31))
-        # self.dateEdit.setDateTime(QtCore.QDateTime(QtCore.QDate(1950, 1, 1), QtCore.QTime(0, 0, 0)))
-        # self.dateEdit.setMinimumDate(QtCore.QDate(1900, 9, 14))
-        # self.dateEdit.setCalendarPopup(True)
-        # self.dateEdit.setObjectName("dateEdit")
-        # self.label_birtday = QtWidgets.QLabel(self.centralwidget)
-        # self.label_birtday.setGeometry(QtCore.QRect(10, 160, 131, 21))
-        # self.label_birtday.setObjectName("label_birtday")
         self.label_nationality = QtWidgets.QLabel(self.centralwidget)
         self.label_nationality.setGeometry(QtCore.QRect(10, 210, 71, 16))
         self.label_nationality.setObjectName("label_nationality")
@@ -144,7 +125,7 @@ class Ui_MainWindow(object):
         self.pushButton_Find = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_Find.setGeometry(QtCore.QRect(10, 460, 321, 31))
         self.pushButton_Find.setObjectName("pushButton_Find")
-        self.pushButton_Find.clicked.connect(self.data_call)
+        self.pushButton_Find.clicked.connect(self.connect_data_name)
         self.line_2 = QtWidgets.QFrame(self.centralwidget)
         self.line_2.setGeometry(QtCore.QRect(0, 30, 331, 16))
         self.line_2.setFrameShape(QtWidgets.QFrame.HLine)
@@ -160,7 +141,8 @@ class Ui_MainWindow(object):
         self.pushButton_clear.setGeometry(QtCore.QRect(10, 500, 321, 31))
         self.pushButton_clear.setObjectName("pushButton_clear")
         self.pushButton_clear.clicked.connect(self.clear_source_data)
-        self.connect_data()
+        # self.connect_data()
+        self.sources()
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -174,7 +156,6 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "AYAKTAN VE YATAN HASTA ARAMA "))
         self.label_name.setText(_translate("MainWindow", "ADI :"))
         self.label_surname.setText(_translate("MainWindow", "SOYADI :"))
-        # self.label_birtday.setText(_translate("MainWindow", "DOĞUM TARİHİ :"))
         self.label_nationality.setText(_translate("MainWindow", "UYRUK :"))
         self.label_tcno.setText(_translate("MainWindow", "TC NO :"))
         self.label_pasaport.setText(_translate("MainWindow", "PASAPORT:"))
@@ -186,29 +167,58 @@ class Ui_MainWindow(object):
         self.pushButton_Create_New_Patient_Folder.setText(_translate("MainWindow", "SEÇİLİ HASTAYA YENİ DOSYA OLUŞTUR"))
         self.pushButton_clear.setText(_translate("MainWindow", "TEMİZLE"))
 
-    def database_connect(self):
-        baglanti = sqlite3.connect("sqlite/patient_info.sqlite")
-        self.cursor = baglanti.cursor()
-        self.cursor.execute("SELECT * FROM patients_inf")
-        baglanti.commit()
+    # if len(patient_surname) != 0:
+    #     self.cursor.execute("Select * From patients_inf Where hasta_soyadi = ?", (patient_surname))
+    # if len(patient_cinsiyet) != 0:
+    #     self.cursor.execute("Select * From patients_inf Where cinsiyet = ?", (patient_cinsiyet))
+    # if len(patient_nationality) != 0:
+    #     self.cursor.execute("Select * From patients_inf Where uyruk = ?", (patient_nationality))
+    # if len(patient_TCKN) != 0:
+    #     self.cursor.execute("Select * From patients_inf Where TCKN = ?", (patient_TCKN))
+    # if len(patient_passaport) != 0:
+    #     self.cursor.execute("Select * From patients_inf Where passaport = ?", (patient_passaport))
+    # if len(patient_mother_name) != 0:
+    #     self.cursor.execute("Select * From patients_inf Where anne_adi = ?", (patient_mother_name))
+    # if len(patient_father_name) != 0:
+    #     self.cursor.execute("Select * From patients_inf Where baba_adi = ?", (patient_father_name))
 
-    def data_call(self):
-        self.database_connect()
-        patient_name = self.lineEdit_name.text()
-        patient_surname = self.lineEdit_Surname.text()
-        patient_cinsiyet = self.ComboBox_Sex.currentText()
-        patient_nationality = self.lineEdit_Nationality.text()
-        patient_TCKN = self.lineEdit_TcNo.text()
-        patient_passaport = self.lineEdit_Pasaport.text()
-        patient_mother_name = self.lineEdit_Mother_Name.text()
-        patient_father_name = self.lineEdit_Father_Name.text()
-        self.cursor.execute(
-            "Select * From patients_inf Where hasta_adi = ? and hasta_soyadi = ? and cinsiyet = ? and uyruk = ? and TCKN = ? and passaport = ? and anne_adi = ? and baba_adi = ?",
-            (patient_name, patient_surname, patient_cinsiyet, patient_nationality, patient_TCKN, patient_passaport,
-             patient_mother_name, patient_father_name))
-        data = self.cursor.fetchall()
-        if len(data) != 0:
-            pass
+    def connect_data_name(self):
+        connection = sqlite3.connect("sqlite/patient_info.sqlite")
+        self.cursor = connection.cursor()
+        
+
+        self.patient_name = self.lineEdit_name.text()
+        self.patient_surname = self.lineEdit_Surname.text()
+        self.patient_cinsiyet = self.ComboBox_Sex.currentText()
+        self.patient_nationality = self.lineEdit_Nationality.text()
+        self.patient_TCKN = self.lineEdit_TcNo.text()
+        self.patient_passaport = self.lineEdit_Pasaport.text()
+        self.selfpatient_mother_name = self.lineEdit_Mother_Name.text()
+        self.patient_father_name = self.lineEdit_Father_Name.text()
+
+        if len(self.patient_name) != 0:
+            # self.query = self.cursor.execute("SELECT * FROM patients_inf WHERE hasta_adi = ?", (self.patient_name,))
+            self.query = self.cursor.execute("SELECT * FROM patients_inf WHERE hasta_adi=?", (self.patient_name,))
+            self.result = self.query
+            self.tableWidget_Patient_List.setRowCount(0)
+            for row_number, row_data in enumerate(self.result):
+                self.tableWidget_Patient_List.insertRow(row_number)
+                for column_number, data in enumerate(row_data):
+                    self.tableWidget_Patient_List.setItem(row_number, column_number,
+                                                          QtWidgets.QTableWidgetItem(str(data)))
+
+    def sources(self):
+        connection = sqlite3.connect("sqlite/patient_info.sqlite")
+        self.cursor = connection.cursor()
+        self.query = self.cursor.execute("SELECT * FROM patients_inf")
+        self.result = self.query
+        self.tableWidget_Patient_List.setRowCount(0)
+        for row_number, row_data in enumerate(self.result):
+            self.tableWidget_Patient_List.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget_Patient_List.setItem(row_number, column_number,
+                                                      QtWidgets.QTableWidgetItem(str(data)))
+        connection.close()
 
     def clear_source_data(self):
         self.lineEdit_name.clear()
